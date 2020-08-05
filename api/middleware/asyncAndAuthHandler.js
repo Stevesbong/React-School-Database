@@ -24,7 +24,7 @@ const authenticateUser = model => {
                 const user = await model.findOne({ where: { emailAddress: credentials.name } });
         
                 if(user) {
-                    const authenticated = bcryptjs.compareSync(credentials.password, user.password);
+                    const authenticated = bcryptjs.compareSync(credentials.pass, user.password);
                     if(authenticated) {
                         console.log(`Authentication successful for username: ${user.firstName} ${user.lastName}`);
         

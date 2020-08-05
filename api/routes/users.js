@@ -1,55 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const { User } = require('../db/index').models;
+
+// Middleware
 const { asyncHandler, authenticateUser } = require('../middleware/asyncAndAuthHandler');
 
 // Encrypt password
 const auth = require('basic-auth');
-
-// function asyncHandler(callback) {
-//     return async( req, res, next) => {
-//         try {
-//             await callback( req, res, next );
-//         } catch(error) {
-//             next(error);
-//         }
-//     }
-// }
-
-// const authenticateUser = async ( req, res, next) => {
-//     let message = null;
-
-//     // Get the user's credentials from the Authorization header
-//     const credentials = auth(req);
-    
-//     if(credentials) {
-//         // Look for a user whose `username` matches the credentials `name` property.
-//         const user = await User.findOne({ where: { emailAddress: credentials.name } });
-
-//         if(user) {
-//             const authenticated = bcryptjs.compareSync(credentials.password, user.password);
-//             if(authenticated) {
-//                 console.log(`Authentication successful for username: ${user.firstName} ${user.lastName}`);
-
-//                 // Store the user on the Request object.
-//                 req.currentUser = user;
-//             } else {
-//                 message = `Authentication failure for username: ${user.firstName}`;
-//             }
-//         } else {
-//             message = `User not found for username: ${credentials.name}`;
-//         }
-//     } else {
-//         message = `Auth header not found.`;
-//     }
-
-//     if(message) {
-//         console.warn(message);
-//         res.status(401).json({  message: 'Access Denied.' })
-//     } else {
-//         next();
-//     }
-// }
 
 
 // Returns the current auth user

@@ -4,6 +4,7 @@ const express = require('express');
 const morgan = require('morgan');
 const { sequelize } = require('./db/index');
 const usersRoute = require('./routes/users');
+const coursesRoute = require('./routes/courses')
 
 
 // variable to enable global error logging
@@ -17,7 +18,7 @@ app.use(morgan('dev'));
 
 app.use(express.json());
 
-app.use('/api', usersRoute)
+app.use('/api', usersRoute, coursesRoute)
 
 app.get('/', ( req, res ) => {
     res.json({
