@@ -21,10 +21,11 @@ export default class CreateCourse extends Component {
 
     componentDidMount() {
         const { context } = this.props;
+        const { firstName, lastName } = context.authenticatedUser;
         this.setState( ()=> {
             return {
                 userId: context.authenticatedUser.id,
-                name: context.authenticatedUser.Name
+                name: `${firstName} ${lastName}`
             }
         })
     }
@@ -53,7 +54,7 @@ export default class CreateCourse extends Component {
                                             className="input-title course--title--input" 
                                             placeholder="Course title"
                                         />
-                                        <p>By thisname</p>
+                                        <p>By {this.state.name}</p>
                                     </div>
                                 </div>
                                 <div className="course--description">
@@ -124,12 +125,15 @@ export default class CreateCourse extends Component {
 
     submit = () => {
         const { context } = this.props;
-        const { emailAddress, password } = context.authenticatedUser;
+        // console.log(context.authenticatedUser,'hji')
+        const { emailAddress } = context.authenticatedUser;
         const { title, description, estimatedTime, materialsNeeded, userId } = this.state;
+        const decodedPassword = atob(context.authenticatedUser.password)
+        const password = decodedPassword;
 
         const course = { title, description, estimatedTime, materialsNeeded, userId };
 
-        context.data.CreateCourse(course, emailAddress, password)
+        context.data.createCourse(course, {emailAddress, password})
         .then( errors => {
             if(errors) {
                 this.setState({errors: errors.error})

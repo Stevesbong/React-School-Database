@@ -78,22 +78,23 @@ export default class Data {
 
      /** 
      * 'createCourses' method perform a syn operation that post a new course payload 
-     * @param {object} course 
+     * @param {object} course
      * If the HTTP response is 201, an emprty array is returned 
      * If the HTTP response is 400, the response data errors are returned 
      * A new error is thrown when an unexpected error occurs 
     */
-    async createCourse(course){
-        const response = await this.api(`/courses`, 'POST', course, true, null);
+    async createCourse(course, authUser){
+        const { emailAddress, password } = authUser;
+        const response = await this.api(`/courses`, 'POST', course, true, {emailAddress, password});
         if(response.status === 201) {
             return []
-        }
-        if(response.status === 400) {
+        } else if(response.status === 400) {
             return response.json(data => {
                 return data.errors;
             });       
+        } else {
+            throw new Error();
         }
-        throw new Error();
     }
 
     /** 
@@ -122,17 +123,15 @@ export default class Data {
      * A new error is thrown when an unexpected error occurs 
     */
     async getUser(emailAddress, password){
-        console.log('get user from data')
         const response = await this.api('/users', 'GET', null, true, {emailAddress, password});
         if(response.status === 200){
-            console.log('get user from data')
             return response.json().then(data => data);
-        }
-        if(response.status === 401){
+        } else if(response.status === 401){
             console.log(response.statusText);
             return null;
+        } else {
+            throw new Error();
         }
-        throw new Error();
     }
 
     /** 
@@ -147,14 +146,13 @@ export default class Data {
         console.log(`This is the user object in createUser`, user); //looks okay - contains all the supplied inputs
         if(response.status === 201){
             return [];
-        }
-        if(response.status === 400){
+        } else if(response.status === 400){
             return response.json().then( data => {
                 console.log('Errors from data.js', data);
                 return data;
             });
-            
+        } else {
+            throw new Error();
         }
-        throw new Error();
     }
 }
