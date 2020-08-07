@@ -21,7 +21,6 @@ export default class Data {
             method,
             headers: {
                 'Content-Type': 'application/json; charset=utf-8',
-                'Access-Control-Allow-origin': '*',
             },
         };
 
@@ -46,7 +45,7 @@ export default class Data {
      * If the HTTP response is 404, the response is logged to the console and null is returned 
     */
     async getCourses(){
-        const response = await this.api('/courses', 'GET', null, false, null);
+        const response = await this.api('/courses', 'GET');
         if(response.status === 200){
             return response.json().then(data => data);
         }
@@ -65,9 +64,9 @@ export default class Data {
      * A new error is thrown when an unexpected error occurs 
     */
     async getCourse(courseId){
-        const response = await this.api(`/courses/${courseId}`, 'GET', null, false, null);
+        const response = await this.api(`/courses/${courseId}`, 'GET');
         if(response.status === 200){
-            return response.json().then(data => data);
+            return response.json().then(data => data.course);
         }
         if(response.status === 404){
             console.log(response.status);
@@ -85,7 +84,7 @@ export default class Data {
      * A new error is thrown when an unexpected error occurs 
     */
     async createCourse(course){
-        const response = await this.api(`courses/create`, 'POST', course, true, null);
+        const response = await this.api(`/courses`, 'POST', course, true, null);
         if(response.status === 201) {
             return []
         }
@@ -123,8 +122,10 @@ export default class Data {
      * A new error is thrown when an unexpected error occurs 
     */
     async getUser(emailAddress, password){
+        console.log('get user from data')
         const response = await this.api('/users', 'GET', null, true, {emailAddress, password});
         if(response.status === 200){
+            console.log('get user from data')
             return response.json().then(data => data);
         }
         if(response.status === 401){

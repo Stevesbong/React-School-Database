@@ -688,6 +688,7 @@ input:focus {
   border-radius: 8px;
   font-weight: bold;
   display: inline-block;
+  cursor: pointer;
   box-sizing: border-box;
   -webkit-transition: background 0.2s;
   -moz-transition: background 0.2s;
