@@ -25,8 +25,20 @@ export default class UpdateCourse extends Component {
             })
         } )
         .catch( error => {
-            history.push('/error');
+            history.push('/notfound');
         })
+    }
+
+    componentDidUpdate() {
+        const { context, history } = this.props;
+        const { user } = this.state;
+        const { emailAddress } = context.authenticatedUser;
+
+        if(user) {
+            if(emailAddress !== user.emailAddress) {
+                history.push('/forbidden');
+            }
+        }
     }
 
     render() {

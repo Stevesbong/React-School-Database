@@ -17,8 +17,9 @@ import CreateCourse from './components/CreateCourse';
 import UpdateCourse from './components/UpdateCourse';
 
 // Error handling component
-import Error from './components/Error';
+import UnhandledError from './components/UnhandledError';
 import NotFound from './components/NotFound';
+import Forbidden from './components/Forbidden';
 
 import withContext from './Context';
 import PrivateRoute from './PrivateRoute';
@@ -60,8 +61,9 @@ function App() {
         <Route exact path='/signout' component = { UserSignOutWithContext } />
 
         {/* Error Handling Route */}
-        <Route path='/error' component = { Error } />
-        <Route component={NotFound} />
+        <Route path='/forbidden' component = { Forbidden } />
+        <Route path='/error' component = { UnhandledError } />
+        <Route component = { NotFound } />
       </Switch>
 
     </div>

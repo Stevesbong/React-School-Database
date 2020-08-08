@@ -128,7 +128,7 @@ export default class CreateCourse extends Component {
             }
         })
         .catch( err => {
-            history.push('error');
+            history.push('/error');
         })
     }
 }

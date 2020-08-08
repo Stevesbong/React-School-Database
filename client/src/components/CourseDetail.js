@@ -16,7 +16,7 @@ export default class CourseDetail extends Component {
     }
 
     componentDidMount() {
-        const { context } = this.props;
+        const { context, history } = this.props;
         const { id } = this.props.match.params;
         let desc, materials;
         context.data.getCourse(id)
@@ -35,6 +35,9 @@ export default class CourseDetail extends Component {
                 materialsNeeded: materials,
                 user: res.user,
             })
+        })
+        .catch( error=> {
+            history.push('/notfound');
         })
     }
 
@@ -84,14 +87,14 @@ export default class CourseDetail extends Component {
                     <div className="grid-66">
                         <div className="course--header">
                             <h4 className="course--label">Course</h4>
-                            <h3 className="course--title">{title}</h3>
-                            <p>{user.firstName} {user.lastName}</p>
+                            <h3 className="course--title">{ title }</h3>
+                            <p>{ user ? `${user.firstName} ${user.lastName}` : '' }</p>
                         </div>
                         <div className="course--description">
-                            { description.map( ( desc, index ) => 
+                            { description ? ( description.map( ( desc, index ) => 
                                 desc !== '' ? (<p key={index}>{desc}</p>) 
                                 : (<p key={index} style={{display:'none'}}>{desc}</p>)
-                            ) }
+                            ) ) : '' }
                         </div>
                     </div>
                     <div className="grid-25 grid-right">

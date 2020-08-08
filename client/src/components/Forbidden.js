@@ -1,12 +1,12 @@
 import React from 'react'
 
-const NotFound = () => {
+const Forbidden = () => {
     return (
         <div className="bounds">
             <li className="not-found">
-                <h1>404 - Page Not Found </h1>
+                <h1>Forbidden</h1>
                 <hr className="line" />
-                <p>Oops!  It looks like the page you're looking for <strong>does not exist.</strong></p>
+                <p>Oh oh! You can't access this page.</p>
                 <div className="grid-100 pad-bottom">
                     <a href='/'>
                         <button className="button button-secondary">Home</button>
@@ -17,4 +17,4 @@ const NotFound = () => {
     )
 }
 
-export default NotFound;
+export default Forbidden;
