@@ -1,0 +1,25 @@
+{
+  "name": "full_stack_app_with_react_and_a_rest_api-v1",
+  "version": "1.0.0",
+  "description": "<!-- # [Portfolio Website](https://stevesbong.github.io/) -->",
+  "main": "index.js",
+  "engines": {
+    "node": "12.18.3"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "cd api && npm install && npm run build",
+    "heroku-postbuild": "cd client && npm install && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Stevesbong/React-School-Database.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Stevesbong/React-School-Database/issues"
+  },
+  "homepage": "https://github.com/Stevesbong/React-School-Database#readme"
+}

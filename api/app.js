@@ -5,7 +5,8 @@ const morgan = require('morgan');
 const cors = require('cors');
 const { sequelize } = require('./db/index');
 const usersRoute = require('./routes/users');
-const coursesRoute = require('./routes/courses')
+const coursesRoute = require('./routes/courses');
+const path = require('path');
 
 
 // variable to enable global error logging
@@ -16,6 +17,8 @@ const app = express();
 
 // Enable All CORS Requests
 app.use(cors());
+
+app.use(express.static(path.join(__dirname, '../client/build')))
 
 // setup morgan which gives us http request logging
 app.use(morgan('dev'));
@@ -44,6 +47,9 @@ app.get('/', ( req, res ) => {
     }
 })();
 
+app.get('*', ( req, res ) => {
+    res.sendFile(path.join(__dirname, '../client/build/index.html'))
+})
 
 // Error handling
 
