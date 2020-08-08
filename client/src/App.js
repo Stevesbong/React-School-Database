@@ -13,6 +13,9 @@ import UserSignIn from './components/UserSignIn';
 import UserSignUp from './components/UserSignUp';
 import UserSignOut from './components/UserSignOut';
 import CreateCourse from './components/CreateCourse';
+import UpdateCourse from './components/UpdateCourse';
+
+import NotFound from './components/NotFound';
 
 import withContext from './Context';
 
@@ -23,6 +26,7 @@ const UserSignInWithContext = withContext(UserSignIn);
 const UserSignUpWithContext = withContext(UserSignUp);
 const UserSignOutWithContext = withContext(UserSignOut);
 const CreateCourseWithContext = withContext(CreateCourse);
+const UpdateCourseWithContext = withContext(UpdateCourse);
 
 function App() {
 
@@ -35,12 +39,13 @@ function App() {
         <Route exact path='/' render={ ()=> <Redirect to='/courses' />} />
         <Route exact path='/courses' component = { CoursesWithContext } />
         <Route exact path='/courses/create' component = { CreateCourseWithContext } />
-        <Route path='/courses/:id' component = { CourseDetailWithContext } />
+        <Route exact path='/courses/:id' component = { CourseDetailWithContext } />
+        <Route path='/courses/:id/update' component = { UpdateCourseWithContext } />
         <Route exact path='/signin' component = { UserSignInWithContext } />
         <Route exact path='/signup' component = { UserSignUpWithContext } />
         <Route exact path='/signout' component = { UserSignOutWithContext } />
 
-        {/* <Route component={NotFound} /> */}
+        <Route component={NotFound} />
       </Switch>
 
     </div>

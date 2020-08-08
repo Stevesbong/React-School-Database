@@ -30,7 +30,7 @@ export default (props) => {
 function ErrorsDisplay({ errors }) {
     let errorsDisplay = null;
 
-    if(errors) {
+    if(errors.length) {
         errorsDisplay = (
             <div>
                 <h2 className="validation--errors--label">validation errors</h2>

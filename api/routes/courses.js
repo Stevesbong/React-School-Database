@@ -93,15 +93,15 @@ router.put('/courses/:id', [
     // If there are validation errors
     if(!errors.isEmpty()) {
         // Use the Array `map()` method to get a list of error messages.
-        const errorMessage = errors.array().map(error = error.msg);
+        const errorMessage = errors.array().map(error => error.msg);
 
         // Return the validation errors to the client.
-        return res.status(400).json({ message: errorMessage });
+        return res.status(400).json({ errors: errorMessage });
     }
 
     // If course exists.
     if(course) {
-        if(course.id === currentUser.id) {
+        if(course.userId === currentUser.id) {
             try {
                 await course.update(req.body);
                 res.status(204).end();
@@ -133,7 +133,7 @@ router.delete('/courses/:id', authenticateUser(User), asyncHandler( async ( req,
     const course = await Course.findByPk(req.params.id);
 
     if(course) {
-        if(course.id === currentUser.id) {
+        if(course.userId === currentUser.id) {
             await course.destroy();
             res.status(204).end();;
         } else {

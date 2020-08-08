@@ -1,41 +1,26 @@
 import React, { Component } from 'react'
-import Data from '../Data';
 import Form from './Form';
 
 export default class CreateCourse extends Component {
-
-    constructor() {
-        super();
-        this.data = new Data();
-    }
 
     state = {
         title: '',
         description: '',
         estimatedTime: '',
         materialsNeeded: '',
-        userId: '',
-        name: '',
         errors: []
     }
 
-    componentDidMount() {
+    render() {
+        const { title, description, estimatedTime, materialsNeeded, errors } = this.state;
         const { context } = this.props;
         const { firstName, lastName } = context.authenticatedUser;
-        this.setState( ()=> {
-            return {
-                userId: context.authenticatedUser.id,
-                name: `${firstName} ${lastName}`
-            }
-        })
-    }
-    render() {
-        const { title, description, estimatedTime, materialsNeeded } = this.state;
         return (
             <div className="bounds course--detail">
                 <h1>Create Course</h1>
                 <Form 
                     cancel={this.cancel}
+                    errors={errors}
                     change={this.change}
                     submit={this.submit}
                     submitButtonText = "Create Course"
@@ -54,7 +39,7 @@ export default class CreateCourse extends Component {
                                             className="input-title course--title--input" 
                                             placeholder="Course title"
                                         />
-                                        <p>By {this.state.name}</p>
+                                        <p>By {firstName} {lastName}</p>
                                     </div>
                                 </div>
                                 <div className="course--description">
@@ -127,11 +112,13 @@ export default class CreateCourse extends Component {
         const { context } = this.props;
         // console.log(context.authenticatedUser,'hji')
         const { emailAddress } = context.authenticatedUser;
-        const { title, description, estimatedTime, materialsNeeded, userId } = this.state;
+        const { title, description, estimatedTime, materialsNeeded } = this.state;
+
+        // decoded password
         const decodedPassword = atob(context.authenticatedUser.password)
         const password = decodedPassword;
 
-        const course = { title, description, estimatedTime, materialsNeeded, userId };
+        const course = { title, description, estimatedTime, materialsNeeded };
 
         context.data.createCourse(course, {emailAddress, password})
         .then( errors => {
@@ -140,6 +127,9 @@ export default class CreateCourse extends Component {
             } else {
                 this.props.history.push('/')
             }
+        })
+        .catch( err => {
+            this.props.history.push('error')
         })
     }
 }

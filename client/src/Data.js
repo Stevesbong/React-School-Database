@@ -40,9 +40,7 @@ export default class Data {
     }
 
     /** 
-     * 'getCourses' method perform a syn operation that get list of courses 
-     * If the HTTP response is 200, the response data is returned.
-     * If the HTTP response is 404, the response is logged to the console and null is returned 
+     * 'getCourses' method perform a async operation that get list of courses.
     */
     async getCourses(){
         const response = await this.api('/courses', 'GET');
@@ -57,11 +55,8 @@ export default class Data {
     } 
 
     /** 
-     * 'getCourse' method perform a syn operation that returns a course with an id that matches the parameter 'courseId'
+     * 'getCourse' method perform a async operation that returns a course.
      * @param {number} courseId 
-     * If the HTTP response is 200, the response data is returned.
-     * If the HTTP response is 404, the response is logged to the console and null is returned
-     * A new error is thrown when an unexpected error occurs 
     */
     async getCourse(courseId){
         const response = await this.api(`/courses/${courseId}`, 'GET');
@@ -76,16 +71,14 @@ export default class Data {
         throw new Error();
     }
 
-     /** 
-     * 'createCourses' method perform a syn operation that post a new course payload 
-     * @param {object} course
-     * If the HTTP response is 201, an emprty array is returned 
-     * If the HTTP response is 400, the response data errors are returned 
-     * A new error is thrown when an unexpected error occurs 
-    */
+    /**
+     * 'createCourse' method perform a sync operation that create a course.
+     * @param {object} course 
+     * @param {object} authUser 
+     */
     async createCourse(course, authUser){
         const { emailAddress, password } = authUser;
-        const response = await this.api(`/courses`, 'POST', course, true, {emailAddress, password});
+        const response = await this.api(`/courses`, 'POST', course, true, { emailAddress, password });
         if(response.status === 201) {
             return []
         } else if(response.status === 400) {
@@ -98,29 +91,51 @@ export default class Data {
     }
 
     /** 
-     * 'UpdateCourses' method perform a syn operation that update a course payload 
+     * 'UpdateCourses' method perform a async operation that update a course. 
      * @param {number} courseId
-     * If the HTTP response is 201, an emprty array is returned 
-     * If the HTTP response is 400, the response data errors are returned 
-     * A new error is thrown when an unexpected error occurs 
+     * @param {object} authUser
     */
+    async updateCourse(course, authUser){
+        const { emailAddress, password } = authUser;
+        console.log(course)
+        const response = await this.api(`/courses/${course.id}`, 'PUT', course, true, { emailAddress, password });
+        if(response.status === 204) {
+            return [];
+        } else if(response.status === 400) {
+            return response.json().then(data => {
+                return data.errors
+            });
+        } else {
+            throw new Error();
+        }
+    }
 
     /** 
-     * 'DeleteCourses' method perform a syn operation that delete a course payload 
+     * 'DeleteCourses' method perform a async operation that delete a course.
      * @param {number} courseId 
-     * If the HTTP response is 201, an emprty array is returned 
-     * If the HTTP response is 400, the response data errors are returned 
-     * A new error is thrown when an unexpected error occurs 
     */
+    async deleteCourse(courseId, authUser){
+        console.log('delete')
+        const { emailAddress, password } = authUser;
+        const response = await this.api(`/courses/${courseId}`, 'DELETE', null, true, { emailAddress, password });
+        if(response.status === 204) {
+            return [];
+        } else if(response.status === 400) {
+            return response.json().then(data => {
+                return data.errors
+            })
+        } else {
+            console.log('error?')
+            throw new Error();
+        }
+    }
 
 
     /** 
-     * 'getUser' method perform a syn operation that returns a user with credentials that matches the parameters 'emailAddress' and 'password'
-     * @param {string} emailAddress 
-     * @param {string} password 
-     * If the HTTP response is 200, the response data is returned.
-     * If the HTTP response is 404, the response is logged to the console and null is returned
-     * A new error is thrown when an unexpected error occurs 
+     * 'getUser' method perform a async operation that returns a user
+     * with credentials that matches the parameters 'emailAddress' and 'password'
+     * @param {string} emailAddress
+     * @param {string} password
     */
     async getUser(emailAddress, password){
         const response = await this.api('/users', 'GET', null, true, {emailAddress, password});
@@ -135,11 +150,8 @@ export default class Data {
     }
 
     /** 
-     * 'createUser' method perform a syn operation that creates a user with provided body. The body contains properties assigned to new user details
-     * @param {object} user 
-     * If the HTTP response is 201, an emprty array is returned 
-     * If the HTTP response is 400, the response data errors are returned 
-     * A new error is thrown when an unexpected error occurs 
+     * 'createUser' method perform a async operation that create user.
+     * @param {object} user  
     */
     async createUser(user){
         const response = await this.api('/users', 'POST', user);
@@ -149,7 +161,7 @@ export default class Data {
         } else if(response.status === 400){
             return response.json().then( data => {
                 console.log('Errors from data.js', data);
-                return data;
+                return data.errors;
             });
         } else {
             throw new Error();

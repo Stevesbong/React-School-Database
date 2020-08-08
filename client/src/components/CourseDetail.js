@@ -6,13 +6,12 @@ export default class CourseDetail extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            id:'',
             title:'',
             description:[],
             estimatedTime:'',
             materialsNeeded:[],
             user:'',
-            authenticatedUser:'',
-            courseId:'',
         }
     }
 
@@ -29,27 +28,54 @@ export default class CourseDetail extends Component {
             : materials = res.materialsNeeded
 
             this.setState({
+                id: res.id,
                 title: res.title,
                 description: desc,
                 estimatedTime: res.estimatedTime,
                 materialsNeeded: materials,
                 user: res.user,
-                authenticatedUser: context.authenticatedUser,
-                courseId: id
             })
         })
     }
+
+    deleteCourse = () => {
+        const { context, match, history } = this.props;
+        const { emailAddress } = context.authenticatedUser;
+
+        const decodedPassword = atob(context.authenticatedUser.password);
+        const password = decodedPassword;
+        const { id } = match.params;
+
+        context.data.deleteCourse(id, { emailAddress, password })
+        .then( () => {
+            history.push('/');
+        })
+        .catch( error => {
+            history.push('/error');
+        })
+    }
     render() {
-        const { title, courseId, user, description, estimatedTime, materialsNeeded } = this.state;
+        const { id, title, user, description, estimatedTime, materialsNeeded } = this.state;
+        const { context } = this.props;
+        const { authenticatedUser } = context;
+
         return (
             <div>
                 <div className="actions--bar">
                     <div className="bounds">
                         <div className="grid-100">
-                            <span>
-                                <Link className="button" to={`/courses/${courseId}`} >Update Course</Link>
-                                <Link className="button" to={`/courses/delete/${courseId}`} >Delete Course</Link>
-                            </span>
+                            { authenticatedUser && authenticatedUser.id === user.id ? (
+                                <span>
+                                    <Link className="button" to={`/courses/${id}/update`} >Update Course</Link>
+                                    <button 
+                                        className="button" 
+                                        type="submit" 
+                                        onClick={this.deleteCourse}>
+                                        Delete Course
+                                    </button>
+                                </span>
+                            ) : null }
+                            
                             <Link className="button button-secondary" to="/">Return to List</Link>
                         </div>
                     </div>

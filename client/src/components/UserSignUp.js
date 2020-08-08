@@ -94,18 +94,22 @@ export default class UserSignUp extends Component {
 
     submit = () => {
         const { context } = this.props;
-        const { firstName, lastName, emailAddress, password } = this.state;
+        const { firstName, lastName, emailAddress, password, confirmPassword } = this.state;
         const user = { firstName, lastName, emailAddress, password };
-        context.data.createUser(user)
-        .then( errors => {
-            if (errors){
-                this.setState({ errors:errors.error });
-            } else {
-                context.actions.signIn(emailAddress, password)
-                .then( () => {
-                    this.props.history.push('/')
-                })
-            }
-        })
+        if(password === confirmPassword) {
+            context.data.createUser(user)
+            .then( errors => {
+                if (errors.length){
+                    this.setState({ errors:errors });
+                } else {
+                    context.actions.signIn(emailAddress, password)
+                    .then( () => {
+                        this.props.history.push('/')
+                    })
+                }
+            })
+        } else {
+            this.setState({errors:['password does not match.']})
+        }
     }
 }

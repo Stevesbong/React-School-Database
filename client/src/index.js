@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 
 // Style
 import './css/global.css';
+import './css/index.css'
 
 import { Provider } from './Context';
 import App from './App';

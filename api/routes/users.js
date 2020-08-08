@@ -6,6 +6,7 @@ const { User } = require('../db/index').models;
 const { asyncHandler, authenticateUser } = require('../middleware/asyncAndAuthHandler');
 
 // Encrypt password
+const bcryptjs = require('bcryptjs');
 const auth = require('basic-auth');
 
 
@@ -41,10 +42,10 @@ router.post('/users', asyncHandler( async (req, res, next) => {
         // If sequelize validation error issue
         if(error.name === 'SequelizeValidationError') {
             error.errors.map( err => errorMessage.push(err.message));
-            res.status(400).json({ error: errorMessage })
+            res.status(400).json({ errors: errorMessage })
         } else if(error.name === 'SequelizeUniqueConstraintError') {
             error.errors.map( err => errorMessage.push(err.message));
-            res.status(400).json({ error: errorMessage })
+            res.status(400).json({ errors: errorMessage })
         } else {
             next(error);
         }

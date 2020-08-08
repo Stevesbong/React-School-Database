@@ -10,6 +10,7 @@ export default class Courses extends Component {
 
     componentDidMount() {
         const { context } = this.props;
+        console.log(this.props)
         context.data.getCourses().then(response => {
             this.setState({
                 courses:response.courses
