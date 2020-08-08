@@ -10,8 +10,8 @@ export default class Courses extends Component {
 
     componentDidMount() {
         const { context } = this.props;
-        console.log(this.props)
-        context.data.getCourses().then(response => {
+        context.data.getCourses()
+        .then(response => {
             this.setState({
                 courses:response.courses
             })
@@ -24,14 +24,14 @@ export default class Courses extends Component {
         return (
             <div className="bounds">
 
-            { !courses ? ( <h3 className="course--add--title">Not Found page need.</h3>)
-            : ( courses.map(course => 
+                { !courses ? ( <h3 className="course--add--title">Not Found page need.</h3>)
+                : ( courses.map(course => 
                     <Course 
                         key={course.id}
                         title={course.title}
-                        to={course.id}
+                        id={course.id}
                     />)
-            ) }
+                ) }
                 
                 <div className="grid-33">
                     <Link className="course--module course--add--module" to='/courses/create'>

@@ -13,16 +13,16 @@ export default class CreateCourse extends Component {
 
     render() {
         const { title, description, estimatedTime, materialsNeeded, errors } = this.state;
-        const { context } = this.props;
-        const { firstName, lastName } = context.authenticatedUser;
+        const { authenticatedUser } = this.props.context;
+        const { firstName, lastName } = authenticatedUser;
         return (
             <div className="bounds course--detail">
                 <h1>Create Course</h1>
                 <Form 
-                    cancel={this.cancel}
-                    errors={errors}
-                    change={this.change}
-                    submit={this.submit}
+                    cancel={ this.cancel }
+                    errors={ errors }
+                    change={ this.change }
+                    submit={ this.submit }
                     submitButtonText = "Create Course"
                     elements={ ()=> (
                         <React.Fragment>
@@ -109,27 +109,26 @@ export default class CreateCourse extends Component {
     }
 
     submit = () => {
-        const { context } = this.props;
-        // console.log(context.authenticatedUser,'hji')
+        const { context, history } = this.props;
         const { emailAddress } = context.authenticatedUser;
         const { title, description, estimatedTime, materialsNeeded } = this.state;
 
         // decoded password
-        const decodedPassword = atob(context.authenticatedUser.password)
+        const decodedPassword = atob(context.authenticatedUser.password);
         const password = decodedPassword;
 
         const course = { title, description, estimatedTime, materialsNeeded };
 
-        context.data.createCourse(course, {emailAddress, password})
+        context.data.createCourse(course, { emailAddress, password })
         .then( errors => {
             if(errors) {
-                this.setState({errors: errors.error})
+                this.setState({errors: errors.error});
             } else {
-                this.props.history.push('/')
+                history.push('/');
             }
         })
         .catch( err => {
-            this.props.history.push('error')
+            history.push('error');
         })
     }
 }

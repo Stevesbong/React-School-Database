@@ -6,6 +6,7 @@ import {
   Redirect
 } from 'react-router-dom';
 
+// Nav, Course, and User Component
 import Header from './components/Header';
 import Courses from './components/Courses';
 import CourseDetail from './components/CourseDetail';
@@ -15,18 +16,26 @@ import UserSignOut from './components/UserSignOut';
 import CreateCourse from './components/CreateCourse';
 import UpdateCourse from './components/UpdateCourse';
 
+// Error handling component
+import Error from './components/Error';
 import NotFound from './components/NotFound';
 
 import withContext from './Context';
+import PrivateRoute from './PrivateRoute';
 
+// Header component with context
 const HeaderWithContext = withContext(Header);
+
+// Course route with context
 const CoursesWithContext = withContext(Courses);
 const CourseDetailWithContext = withContext(CourseDetail);
+const CreateCourseWithContext = withContext(CreateCourse);
+const UpdateCourseWithContext = withContext(UpdateCourse);
+
+// User route with context
 const UserSignInWithContext = withContext(UserSignIn);
 const UserSignUpWithContext = withContext(UserSignUp);
 const UserSignOutWithContext = withContext(UserSignOut);
-const CreateCourseWithContext = withContext(CreateCourse);
-const UpdateCourseWithContext = withContext(UpdateCourse);
 
 function App() {
 
@@ -36,15 +45,22 @@ function App() {
       <HeaderWithContext />
 
       <Switch>
+        {/* Root Route */}
         <Route exact path='/' render={ ()=> <Redirect to='/courses' />} />
+
+        {/* Course Route */}
         <Route exact path='/courses' component = { CoursesWithContext } />
-        <Route exact path='/courses/create' component = { CreateCourseWithContext } />
+        <PrivateRoute path='/courses/create' component = { CreateCourseWithContext } />
         <Route exact path='/courses/:id' component = { CourseDetailWithContext } />
-        <Route path='/courses/:id/update' component = { UpdateCourseWithContext } />
+        <PrivateRoute path='/courses/:id/update' component = { UpdateCourseWithContext } />
+
+        {/* User Route */}
         <Route exact path='/signin' component = { UserSignInWithContext } />
         <Route exact path='/signup' component = { UserSignUpWithContext } />
         <Route exact path='/signout' component = { UserSignOutWithContext } />
 
+        {/* Error Handling Route */}
+        <Route path='/error' component = { Error } />
         <Route component={NotFound} />
       </Switch>
 

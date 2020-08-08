@@ -21,10 +21,10 @@ export default class CourseDetail extends Component {
         let desc, materials;
         context.data.getCourse(id)
         .then(res => {
-            res.description !== null || res.description !==undefined ? desc = res.description.split('\n') 
+            res.description ? desc = res.description.split('\n') 
             : desc = res.description
 
-            res.materialsNeeded !== null ? materials = res.materialsNeeded.split('\n') 
+            res.materialsNeeded ? materials = res.materialsNeeded.split('\n') 
             : materials = res.materialsNeeded
 
             this.setState({
@@ -42,6 +42,7 @@ export default class CourseDetail extends Component {
         const { context, match, history } = this.props;
         const { emailAddress } = context.authenticatedUser;
 
+        // decoded password
         const decodedPassword = atob(context.authenticatedUser.password);
         const password = decodedPassword;
         const { id } = match.params;
@@ -56,8 +57,7 @@ export default class CourseDetail extends Component {
     }
     render() {
         const { id, title, user, description, estimatedTime, materialsNeeded } = this.state;
-        const { context } = this.props;
-        const { authenticatedUser } = context;
+        const { authenticatedUser } = this.props.context;
 
         return (
             <div>
@@ -106,11 +106,20 @@ export default class CourseDetail extends Component {
                                 <li className="course--stats--list--item">
                                     <h4>Materials Needed</h4>
                                     <ul>
-                                        { materialsNeeded ?
+                                        { materialsNeeded ? 
+                                            ( materialsNeeded.map( ( material, index ) =>
 
-                                            ( materialsNeeded.map( ( material, index ) => 
-                                                material !== '' ? (<li key={ index }>{ material }</li>)
-                                                : (<li key={ index } style={{ display:'none' }}>{ material }</li>) 
+                                                material !== '' ? ( <li 
+                                                                    key={ index }>
+                                                                    { material }
+                                                                    </li>)
+                                                                    
+                                                                : (<li 
+                                                                    key={ index }
+                                                                    style={{ display:'none' }}>
+                                                                    { material }
+                                                                    </li>)
+
                                             ) )
                                             : (<li>No Needed</li>)
                                          }

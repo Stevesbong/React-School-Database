@@ -7,7 +7,6 @@ const { asyncHandler, authenticateUser } = require('../middleware/asyncAndAuthHa
 
 // Encrypt password
 const bcryptjs = require('bcryptjs');
-const auth = require('basic-auth');
 
 
 // Returns the current auth user
@@ -18,7 +17,6 @@ router.get('/users', authenticateUser(User), asyncHandler( async (req, res, next
             exclude: [ 'password', 'createdAt', 'updatedAt' ]
         }
     })
-
     res.status(200).json(user)
 }));
 

@@ -11,6 +11,7 @@ export default class UserSignIn extends Component {
     }
     render() {
         const { emailAddress, password, errors } = this.state;
+
         return (
             <div className="bounds">
                 <div className="grid-33 centered signin">
@@ -27,16 +28,16 @@ export default class UserSignIn extends Component {
                                         id="emailAddress" 
                                         name="emailAddress" 
                                         type="text" 
-                                        placeholder="Email Address" 
-                                        onChange={this.change} 
-                                        value={emailAddress} />
+                                        placeholder="Email Address"
+                                        value={ emailAddress }
+                                        onChange={ this.change } />
                                     <input 
                                         id="password" 
                                         name="password" 
                                         type="password" 
                                         placeholder="Password" 
-                                        value={password} 
-                                        onChange={this.change} />
+                                        value={ password } 
+                                        onChange={ this.change } />
                                 </React.Fragment>
                             )} />
 
@@ -64,9 +65,8 @@ export default class UserSignIn extends Component {
 
     submit = () => {
         const { context } = this.props;
-        const { from } = this.props.location.state || { from: { pathname: '/authenticated' } }
+        const { from } = this.props.location.state || { from: { pathname: '/' } }
         const { emailAddress, password } = this.state;
-        console.log(emailAddress, 'email', password, 'password')
         context.actions.signIn(emailAddress, password)
         .then( user => {
             if(user == null) {
@@ -75,11 +75,9 @@ export default class UserSignIn extends Component {
                 })
             } else {
                 this.props.history.push(from)
-                console.log(`SUCCESS! ${emailAddress} is now signed in!`)
             }
         })
         .catch( error => {
-            console.error(error);
             this.props.history.push('/error');
         })
     }

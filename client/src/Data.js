@@ -36,7 +36,7 @@ export default class Data {
             //send an authorization header on each required auth request 
             options.headers['Authorization'] = `Basic ${encodedCredentials}`;
         }
-        return fetch(url, options)
+        return fetch(url, options);
     }
 
     /** 
@@ -46,12 +46,11 @@ export default class Data {
         const response = await this.api('/courses', 'GET');
         if(response.status === 200){
             return response.json().then(data => data);
-        }
-        if(response.status === 404){
-            console.log(response)
+        } else if(response.status === 404){
             return null;
+        } else {
+            throw new Error();
         }
-        throw new Error();
     } 
 
     /** 
@@ -62,13 +61,11 @@ export default class Data {
         const response = await this.api(`/courses/${courseId}`, 'GET');
         if(response.status === 200){
             return response.json().then(data => data.course);
-        }
-        if(response.status === 404){
-            console.log(response.status);
-            console.log(response.statusText)
+        } else if(response.status === 404){
             return null;
+        } else {
+            throw new Error();
         }
-        throw new Error();
     }
 
     /**
@@ -92,12 +89,11 @@ export default class Data {
 
     /** 
      * 'UpdateCourses' method perform a async operation that update a course. 
-     * @param {number} courseId
+     * @param {object} course
      * @param {object} authUser
     */
     async updateCourse(course, authUser){
         const { emailAddress, password } = authUser;
-        console.log(course)
         const response = await this.api(`/courses/${course.id}`, 'PUT', course, true, { emailAddress, password });
         if(response.status === 204) {
             return [];
@@ -115,7 +111,6 @@ export default class Data {
      * @param {number} courseId 
     */
     async deleteCourse(courseId, authUser){
-        console.log('delete')
         const { emailAddress, password } = authUser;
         const response = await this.api(`/courses/${courseId}`, 'DELETE', null, true, { emailAddress, password });
         if(response.status === 204) {
@@ -125,7 +120,6 @@ export default class Data {
                 return data.errors
             })
         } else {
-            console.log('error?')
             throw new Error();
         }
     }
@@ -155,12 +149,10 @@ export default class Data {
     */
     async createUser(user){
         const response = await this.api('/users', 'POST', user);
-        console.log(`This is the user object in createUser`, user); //looks okay - contains all the supplied inputs
         if(response.status === 201){
             return [];
         } else if(response.status === 400){
             return response.json().then( data => {
-                console.log('Errors from data.js', data);
                 return data.errors;
             });
         } else {
