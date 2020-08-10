@@ -97,6 +97,11 @@ export default class UserSignUp extends Component {
         const { firstName, lastName, emailAddress, password, confirmPassword } = this.state;
         const user = { firstName, lastName, emailAddress, password };
         if(password === confirmPassword) {
+
+            /**
+             * 'createUser' method that call the 'createUser' method in Data.js 
+             * @param {object} user user information
+             */
             context.data.createUser(user)
             .then( errors => {
                 if (errors.length){

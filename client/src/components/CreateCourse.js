@@ -110,18 +110,24 @@ export default class CreateCourse extends Component {
 
     submit = () => {
         const { context, history } = this.props;
-        const { emailAddress } = context.authenticatedUser;
+        const { id, emailAddress } = context.authenticatedUser;
+        const userId = id;
         const { title, description, estimatedTime, materialsNeeded } = this.state;
 
         // decoded password
         const decodedPassword = atob(context.authenticatedUser.password);
         const password = decodedPassword;
 
-        const course = { title, description, estimatedTime, materialsNeeded };
+        const course = { title, description, estimatedTime, materialsNeeded, userId };
 
+        /**
+         * 'createCourse' method that call the 'createCourse' method in Data.js 
+         * @param {object} Course - course information
+         * @param {object} - emailAddress and decoded password
+         */
         context.data.createCourse(course, { emailAddress, password })
         .then( errors => {
-            if(errors) {
+            if(errors.length) {
                 this.setState({errors: errors.error});
             } else {
                 history.push('/');

@@ -67,6 +67,12 @@ export default class UserSignIn extends Component {
         const { context } = this.props;
         const { from } = this.props.location.state || { from: { pathname: '/' } }
         const { emailAddress, password } = this.state;
+
+        /**
+         * 'signIn' method that call the 'signIn' method in Data.js 
+         * @param {string} emailAddress
+         * @param {string} password
+         */
         context.actions.signIn(emailAddress, password)
         .then( user => {
             if(user == null) {

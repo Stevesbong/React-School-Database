@@ -21,6 +21,7 @@ import UnhandledError from './components/UnhandledError';
 import NotFound from './components/NotFound';
 import Forbidden from './components/Forbidden';
 
+// High Order Component
 import withContext from './Context';
 import PrivateRoute from './PrivateRoute';
 

@@ -14,6 +14,11 @@ export default class UpdateCourse extends Component {
 
     componentDidMount() {
         const { context, match, history } = this.props;
+
+        /**
+         * 'getCourse' method that call the 'getCourse' method in Data.js 
+         * @param {number} courseId
+         */
         context.data.getCourse(match.params.id)
         .then( course => {
             this.setState({

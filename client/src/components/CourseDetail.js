@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import ReactMarkdown from 'react-markdown';
 
 export default class CourseDetail extends Component {
 
@@ -8,9 +9,9 @@ export default class CourseDetail extends Component {
         this.state = {
             id:'',
             title:'',
-            description:[],
+            description:'',
             estimatedTime:'',
-            materialsNeeded:[],
+            materialsNeeded:'',
             user:'',
         }
     }
@@ -18,21 +19,15 @@ export default class CourseDetail extends Component {
     componentDidMount() {
         const { context, history } = this.props;
         const { id } = this.props.match.params;
-        let desc, materials;
         context.data.getCourse(id)
         .then(res => {
-            res.description ? desc = res.description.split('\n') 
-            : desc = res.description
-
-            res.materialsNeeded ? materials = res.materialsNeeded.split('\n') 
-            : materials = res.materialsNeeded
 
             this.setState({
                 id: res.id,
                 title: res.title,
-                description: desc,
+                description: res.description,
                 estimatedTime: res.estimatedTime,
-                materialsNeeded: materials,
+                materialsNeeded: res.materialsNeeded,
                 user: res.user,
             })
         })
@@ -50,6 +45,11 @@ export default class CourseDetail extends Component {
         const password = decodedPassword;
         const { id } = match.params;
 
+        /**
+         * 'deleteCourse' method that call the 'deleteCourse' method in Data.js
+         * @param {number} courseId - course Id
+         * @param {object} - emailAddress and decoded password
+         */
         context.data.deleteCourse(id, { emailAddress, password })
         .then( () => {
             history.push('/');
@@ -91,10 +91,7 @@ export default class CourseDetail extends Component {
                             <p>{ user ? `${user.firstName} ${user.lastName}` : '' }</p>
                         </div>
                         <div className="course--description">
-                            { description ? ( description.map( ( desc, index ) => 
-                                desc !== '' ? (<p key={index}>{desc}</p>) 
-                                : (<p key={index} style={{display:'none'}}>{desc}</p>)
-                            ) ) : '' }
+                            <ReactMarkdown>{ description }</ReactMarkdown>
                         </div>
                     </div>
                     <div className="grid-25 grid-right">
@@ -109,24 +106,7 @@ export default class CourseDetail extends Component {
                                 <li className="course--stats--list--item">
                                     <h4>Materials Needed</h4>
                                     <ul>
-                                        { materialsNeeded ? 
-                                            ( materialsNeeded.map( ( material, index ) =>
-
-                                                material !== '' ? ( <li 
-                                                                    key={ index }>
-                                                                    { material }
-                                                                    </li>)
-                                                                    
-                                                                : (<li 
-                                                                    key={ index }
-                                                                    style={{ display:'none' }}>
-                                                                    { material }
-                                                                    </li>)
-
-                                            ) )
-                                            : (<li>No Needed</li>)
-                                         }
-                                        
+                                        <ReactMarkdown>{ materialsNeeded }</ReactMarkdown>
                                     </ul>
                                 </li>
                             </ul>

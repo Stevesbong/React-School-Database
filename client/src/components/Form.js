@@ -26,6 +26,11 @@ export default (props) => {
     )
 }
 
+/**
+ * 'ErrorsDisplay' function performs that create error component 
+ *  and display errors.
+ * @param {array} errors - errors
+ */
 function ErrorsDisplay({ errors }) {
     let errorsDisplay = null;
 
