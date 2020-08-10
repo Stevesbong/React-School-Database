@@ -93,7 +93,7 @@ export default class UserSignUp extends Component {
     }
 
     submit = () => {
-        const { context } = this.props;
+        const { context, history } = this.props;
         const { firstName, lastName, emailAddress, password, confirmPassword } = this.state;
         const user = { firstName, lastName, emailAddress, password };
         if(password === confirmPassword) {
@@ -112,6 +112,9 @@ export default class UserSignUp extends Component {
                         this.props.history.push('/')
                     })
                 }
+            })
+            .catch( error => {
+                history.push('/error');
             })
         } else {
             this.setState({errors:['password does not match.']});
