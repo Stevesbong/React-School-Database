@@ -43,31 +43,31 @@ function App() {
 
   return (
     <BrowserRouter>
-    <div className="App">
-      <HeaderWithContext />
+      <div className="App">
+        <HeaderWithContext />
 
-      <Switch>
-        {/* Root Route */}
-        <Route exact path='/' render={ ()=> <Redirect to='/courses' />} />
+        <Switch>
+          {/* Root Route */}
+          <Route exact path='/' render={ ()=> <Redirect to='/courses' />} />
 
-        {/* Course Route */}
-        <Route exact path='/courses' component = { CoursesWithContext } />
-        <PrivateRoute path='/courses/create' component = { CreateCourseWithContext } />
-        <Route exact path='/courses/:id' component = { CourseDetailWithContext } />
-        <PrivateRoute path='/courses/:id/update' component = { UpdateCourseWithContext } />
+          {/* Course Route */}
+          <Route exact path='/courses' component = { CoursesWithContext } />
+          <PrivateRoute path='/courses/create' component = { CreateCourseWithContext } />
+          <Route exact path='/courses/:id' component = { CourseDetailWithContext } />
+          <PrivateRoute path='/courses/:id/update' component = { UpdateCourseWithContext } />
 
-        {/* User Route */}
-        <Route exact path='/signin' component = { UserSignInWithContext } />
-        <Route exact path='/signup' component = { UserSignUpWithContext } />
-        <Route exact path='/signout' component = { UserSignOutWithContext } />
+          {/* User Route */}
+          <Route exact path='/signin' component = { UserSignInWithContext } />
+          <Route exact path='/signup' component = { UserSignUpWithContext } />
+          <Route exact path='/signout' component = { UserSignOutWithContext } />
 
-        {/* Error Handling Route */}
-        <Route path='/forbidden' component = { Forbidden } />
-        <Route path='/error' component = { UnhandledError } />
-        <Route component = { NotFound } />
-      </Switch>
+          {/* Error Handling Route */}
+          <Route path='/forbidden' component = { Forbidden } />
+          <Route path='/error' component = { UnhandledError } />
+          <Route component = { NotFound } />
+        </Switch>
 
-    </div>
+      </div>
     </BrowserRouter>
   );
 }
